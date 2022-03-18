@@ -13,8 +13,6 @@ var titleEl = document.getElementById("tiles");
 var flippedTile1 = null;
 var flippedTile2 = null;
 
-// console.log(countdownEL, scoreEl, tiles);
-
 // functions
 
 function updateScore() {
@@ -87,8 +85,26 @@ function createTiles() {
   }
 }
 
+function gameOver() {
+  clearInterval(intervalId);
+  var initials = prompt("What are your initials?");
+  var data = { initials: initials, score: score };
+  localStorage.setItem("memoryGameChamp", JSON.stringify(data));
+
+  var playAgain = confirm("Want to play again?");
+  if (playAgain) {
+    window.location.reload;
+  }
+}
+
 function startTimer() {
-  console.log("Starting timer...");
+  intervalId = setInterval(function () {
+    time--;
+    countdownEL.innerText = time;
+    if (time === 0) {
+      gameOver();
+    }
+  }, 1000);
 }
 
 function startRound() {
