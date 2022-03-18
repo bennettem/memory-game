@@ -32,7 +32,7 @@ function unFlipTiles() {
     flippedTile2.classList.remove("flipped");
     flippedTile1 = null;
     flippedTile2 = null;
-  }, 2000);
+  }, 1000);
 }
 
 function compareTiles() {
@@ -85,6 +85,16 @@ function createTiles() {
   }
 }
 
+function startTimer() {
+  intervalId = setInterval(function () {
+    time--;
+    countdownEL.innerText = time;
+    if (time === 0) {
+      gameOver();
+    }
+  }, 1000);
+}
+
 function gameOver() {
   clearInterval(intervalId);
   var initials = prompt("What are your initials?");
@@ -95,16 +105,6 @@ function gameOver() {
   if (playAgain) {
     window.location.reload;
   }
-}
-
-function startTimer() {
-  intervalId = setInterval(function () {
-    time--;
-    countdownEL.innerText = time;
-    if (time === 0) {
-      gameOver();
-    }
-  }, 1000);
 }
 
 function startRound() {
