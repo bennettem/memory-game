@@ -4,15 +4,64 @@ var numTiles = 20;
 var startTime = 30;
 var time = startTime;
 var intervalId;
+var score = 0;
 
 var countdownEL = document.getElementById("countdown");
 var scoreEl = document.getElementById("score");
 var titleEl = document.getElementById("tiles");
 
+var flippedTile1 = null;
+var flippedTile2 = null;
+
 // console.log(countdownEL, scoreEl, tiles);
 
 // functions
-function handleTileClick() {}
+
+function updateScore() {
+  flippedTile1.classList.add("matched");
+  flippedTile2.classList.add("matched");
+  score++;
+  scoreEl.innerText = score;
+  flippedTile1 = null;
+  flippedTile2 = null;
+}
+
+function unFlipTiles() {
+  setTimeout(function () {
+    flippedTile1.innerText = brainEmoji;
+    flippedTile2.innerText = brainEmoji;
+    flippedTile1.classList.remove("flipped");
+    flippedTile2.classList.remove("flipped");
+    flippedTile1 = null;
+    flippedTile2 = null;
+  }, 2000);
+}
+
+function compareTiles() {
+  var num1 = flippedTile1.getAttribute("data-number");
+  var num2 = flippedTile2.getAttribute("data-number");
+  if (num1 === num2) {
+    updateScore();
+  } else {
+    unFlipTiles();
+  }
+}
+
+function handleTileClick(event) {
+  if (flippedTile1 && flippedTile2) {
+    return;
+  }
+  var clickedTile = event.target;
+  var num = clickedTile.getAttribute("data-number");
+  clickedTile.innerText = num;
+  clickedTile.classList.add("flipped");
+  if (!flippedTile1) {
+    flippedTile1 = clickedTile;
+  } else {
+    flippedTile2 = clickedTile;
+    compareTiles();
+  }
+}
 
 function createShuffledNumbers() {
   var nums = [];
@@ -27,12 +76,11 @@ function createShuffledNumbers() {
 }
 
 function createTiles() {
-  console.log("Creating tiles...");
-  var ShuffledNums = createShuffledNumbers();
-  for (var i = 0; i < ShuffledNums.length; i++) {
+  var shuffledNums = createShuffledNumbers();
+  for (var i = 0; i < shuffledNums.length; i++) {
     var li = document.createElement("li");
     li.innerText = brainEmoji;
-    li.setAttribute("data-number", ShuffledNums[i]);
+    li.setAttribute("data-number", shuffledNums[i]);
     li.setAttribute("class", "tile");
     li.addEventListener("click", handleTileClick);
     titleEl.appendChild(li);
