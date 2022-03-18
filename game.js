@@ -14,15 +14,27 @@ var titleEl = document.getElementById("tiles");
 // functions
 function handleTileClick() {}
 
+function createShuffledNumbers() {
+  var nums = [];
+  for (var i = 0; i < numTiles / 2; i++) {
+    var randNum = Math.floor(Math.random() * 500);
+    nums.push(randNum, randNum);
+  }
+  nums = nums.sort(function () {
+    return Math.random() - 0.5;
+  });
+  return nums;
+}
+
 function createTiles() {
   console.log("Creating tiles...");
-  for (var i = 0; i < numTiles; i++) {
+  var ShuffledNums = createShuffledNumbers();
+  for (var i = 0; i < ShuffledNums.length; i++) {
     var li = document.createElement("li");
     li.innerText = brainEmoji;
-    li.setAttribute("data-number", 2);
+    li.setAttribute("data-number", ShuffledNums[i]);
     li.setAttribute("class", "tile");
     li.addEventListener("click", handleTileClick);
-    console.log(li);
     titleEl.appendChild(li);
   }
 }
